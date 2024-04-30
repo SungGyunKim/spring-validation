@@ -70,4 +70,25 @@ class CreateContactTests {
         assertEquals(1, constraintViolations.size()); // ConstraintViolation에 실패에 대한 정보가 담긴다.
         assertEquals("must not be blank", constraintViolations.iterator().next().getMessage());
     }
+
+    @Test
+    void test_collectionValidate() {
+        Locale.setDefault(Locale.US);
+        // Given
+        final DeleteContacts createContact = DeleteContacts
+            .builder()
+            .build();
+
+        // When
+        Set<ConstraintViolation<?>> constraintViolations = null;
+        try {
+            contactService.deleteContacts(createContact);
+        } catch (ConstraintViolationException exception) {
+            constraintViolations = exception.getConstraintViolations();
+        }
+
+        // Then
+        assertEquals(1, constraintViolations.size());
+        assertEquals("must not be null", constraintViolations.iterator().next().getMessage());
+    }
 }
