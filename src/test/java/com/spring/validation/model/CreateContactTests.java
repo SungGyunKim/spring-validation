@@ -53,39 +53,38 @@ class CreateContactTests {
                 .contactType(ContactType.PHONE_NUMBER)
                 .build();
 
-
         // When
-        Set<ConstraintViolation<?>> constraintViolations = null;
         try {
             contactService.createContact(createContact);
         } catch (ConstraintViolationException exception) {
-            constraintViolations = exception.getConstraintViolations();
-        }
+            Set<ConstraintViolation<?>> constraintViolations = exception.getConstraintViolations();
 
-        // Then
-        assertEquals(1, constraintViolations.size()); // ConstraintViolation에 실패에 대한 정보가 담긴다.
-        assertEquals("must not be blank", constraintViolations.iterator().next().getMessage());
+            // Then
+            assertEquals(1, constraintViolations.size()); // ConstraintViolation에 실패에 대한 정보가 담긴다.
+            assertEquals("must not be blank", constraintViolations.iterator().next().getMessage());
+        }
     }
 
     @Test
     void test_collectionValidate() {
         Locale.setDefault(Locale.US);
         // Given
-        final DeleteContacts createContact = DeleteContacts
+        final DeleteContacts deleteContacts = DeleteContacts
             .builder()
             .build();
 
         // When
-        Set<ConstraintViolation<?>> constraintViolations = null;
         try {
-            contactService.deleteContacts(createContact);
+            contactService.deleteContacts(deleteContacts);
         } catch (ConstraintViolationException exception) {
-            constraintViolations = exception.getConstraintViolations();
+            Set<ConstraintViolation<?>> constraintViolations = exception.getConstraintViolations();
+
+            // Then
+            assertEquals(1, constraintViolations.size());
+            assertEquals("must not be null", constraintViolations.iterator().next().getMessage());
         }
 
-        // Then
-        assertEquals(1, constraintViolations.size());
-        assertEquals("must not be null", constraintViolations.iterator().next().getMessage());
+
     }
 
     @Test
@@ -100,15 +99,14 @@ class CreateContactTests {
                 .build();
 
         // When
-        Set<ConstraintViolation<?>> constraintViolations = null;
         try {
             contactService.createContact(createContact);
         } catch (ConstraintViolationException exception) {
-            constraintViolations = exception.getConstraintViolations();
-        }
+            Set<ConstraintViolation<?>> constraintViolations = exception.getConstraintViolations();
 
-        // Then
-        assertEquals(1, constraintViolations.size());
-        assertEquals("Emoji is not allowed", constraintViolations.iterator().next().getMessage());
+            // Then
+            assertEquals(1, constraintViolations.size());
+            assertEquals("Emoji is not allowed", constraintViolations.iterator().next().getMessage());
+        }
     }
 }
