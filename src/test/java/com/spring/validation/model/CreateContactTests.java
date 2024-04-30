@@ -1,21 +1,17 @@
 package com.spring.validation.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.spring.validation.enums.ContactType;
 import com.spring.validation.service.ContactService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
-import java.util.Set;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeAll;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.Collection;
 import java.util.Locale;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import java.util.Set;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -90,5 +86,29 @@ class CreateContactTests {
         // Then
         assertEquals(1, constraintViolations.size());
         assertEquals("must not be null", constraintViolations.iterator().next().getMessage());
+    }
+
+    @Test
+    void test_customValidate() {
+        Locale.setDefault(Locale.US);
+        // Given
+        final CreateContact createContact = CreateContact
+                .builder()
+                .uid("\uD83D\uDE03") // 😃
+                .contact("000")
+                .contactType(ContactType.PHONE_NUMBER)
+                .build();
+
+        // When
+        Set<ConstraintViolation<?>> constraintViolations = null;
+        try {
+            contactService.createContact(createContact);
+        } catch (ConstraintViolationException exception) {
+            constraintViolations = exception.getConstraintViolations();
+        }
+
+        // Then
+        assertEquals(1, constraintViolations.size());
+        assertEquals("Emoji is not allowed", constraintViolations.iterator().next().getMessage());
     }
 }

@@ -1,5 +1,6 @@
 package com.spring.validation.model;
 
+import com.spring.validation.constraint.NoEmoji;
 import com.spring.validation.enums.ContactType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,7 @@ import lombok.Builder;
 
 @Builder
 public class CreateContact {
+    @NoEmoji
     @Size(max = 64) // 최대 길이 64
     @NotBlank // 빈문자열은 안됨
     private String uid;
