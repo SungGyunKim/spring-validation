@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.spring.validation.enums.ContactType;
 import com.spring.validation.service.ContactService;
+import com.spring.validation.service.MessageService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;
@@ -20,6 +21,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 class CreateContactTests {
     @Autowired
     private ContactService contactService;
+
+    @Autowired
+    private MessageService messageService;
 
     @Test
     void test_validate() {
@@ -83,8 +87,6 @@ class CreateContactTests {
             assertEquals(1, constraintViolations.size());
             assertEquals("must not be null", constraintViolations.iterator().next().getMessage());
         }
-
-
     }
 
     @Test
@@ -107,6 +109,46 @@ class CreateContactTests {
             // Then
             assertEquals(1, constraintViolations.size());
             assertEquals("Emoji is not allowed", constraintViolations.iterator().next().getMessage());
+        }
+    }
+
+    @Test
+    void test_adGroupValidation() {
+        Locale.setDefault(Locale.US);
+        // Given
+        final Message message = Message.builder()
+            .contact("000")
+            .build();
+
+        // When
+        try {
+            messageService.sendAdMessage(message);
+        } catch (ConstraintViolationException exception) {
+            Set<ConstraintViolation<?>> constraintViolations = exception.getConstraintViolations();
+
+            // Then
+            assertEquals(1, constraintViolations.size());
+            assertEquals("sendAdMessage.message.removeGuide: must not be empty", exception.getMessage());
+        }
+    }
+
+    @Test
+    void test_defaultGroupValidation() {
+        Locale.setDefault(Locale.US);
+        // Given
+        final Message message = Message.builder()
+            .title("title")
+            .build();
+
+        // When
+        try {
+            messageService.sendNormalMessage(message);
+        } catch (ConstraintViolationException exception) {
+            Set<ConstraintViolation<?>> constraintViolations = exception.getConstraintViolations();
+
+            // Then
+            assertEquals(1, constraintViolations.size());
+            assertEquals("sendNormalMessage.message.body: must not be empty", exception.getMessage());
         }
     }
 }
