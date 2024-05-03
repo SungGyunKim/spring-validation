@@ -30,4 +30,11 @@ public class MessageService {
             sendNormalMessage(message);
         }
     }
+
+    /**
+     * message.isAd가 true이면 Ad 그룹에 속한 contcat, removeGuide 속성까지 검사한다.
+     */
+    public void sendMessage(@Valid Message message) {
+         // Do Something
+    }
 }

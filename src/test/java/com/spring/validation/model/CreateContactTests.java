@@ -152,4 +152,24 @@ class CreateContactTests {
             assertEquals("sendNormalMessage.message.body: must not be empty", exception.getMessage());
         }
     }
+
+    @Test
+    void test_dtoClassValidation() {
+        Locale.setDefault(Locale.US);
+        // Given
+        final Message message = Message.builder()
+            .isAd(true)
+            .contact("000")
+            .build();
+
+        // When
+        try {
+            messageService.sendMessage(message);
+        } catch (ConstraintViolationException exception) {
+            Set<ConstraintViolation<?>> constraintViolations = exception.getConstraintViolations();
+
+            // Then
+            assertEquals(3, constraintViolations.size());
+        }
+    }
 }
