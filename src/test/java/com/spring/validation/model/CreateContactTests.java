@@ -191,7 +191,7 @@ class CreateContactTests {
 
             // Then
             assertEquals(1, constraintViolations.size());
-            assertEquals("Emoji is not allowed", constraintViolations.iterator().next().getMessage());
+            assertEquals("Emoji[\uD83D\uDE03] is not allowed", constraintViolations.iterator().next().getMessage());
         }
     }
 

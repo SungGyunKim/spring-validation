@@ -20,7 +20,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = NoEmojiValidator.class)
 @Documented
 public @interface NoEmoji{
-    String message() default "Emoji is not allowed";
+    String message() default "{com.spring.validation.constraint.NoEmoji.message}";
 
     Class<?>[] groups() default {};
 
