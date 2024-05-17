@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
   /**
    * {@code ConstraintViolationException} : {@code @PathVariable}에 매핑되는 경로 파라미터 또는
-   *                                        {@code @RequestParam}에 매핑되는 쿼리 파라미터를 검증할 때 던져지는 예외
+   *                                        {@code @RequestParam}, {@code @ModelAttribute}에 매핑되는 쿼리 파라미터를 검증할 때 던져지는 예외
    */
   @ExceptionHandler(ConstraintViolationException.class)
   ResponseEntity<Object> onConstraintValidationException(ConstraintViolationException e) {

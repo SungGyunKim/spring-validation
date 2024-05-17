@@ -68,7 +68,7 @@ class ContactControllerTest {
    *   </li>
    *   <li>
    *     {@code @ExceptionHandler(ConstraintViolationException.class)}로 {@code @PathVariable}에 매핑되는 경로 파라미터 또는
-   *     {@code @RequestParam}에 매핑되는 쿼리 파라미터를 변환시 실시하는 유효성 검사의 실패 사유를 잡는다.
+   *     {@code @RequestParam}, {@code @ModelAttribute}에 매핑되는 쿼리 파라미터를 변환시 실시하는 유효성 검사의 실패 사유를 잡는다.
    *   </li>
    * </ol>
    */
